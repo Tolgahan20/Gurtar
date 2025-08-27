@@ -4,7 +4,13 @@ secret:
   - build/
   - '*.lock'
   - .env.example
+  - env.example
   - '*.log'
   - coverage/
   - dist/
+  - '**/*.example'
+  - '**/*.sample'
+  - scripts/
+  ignored_detectors:
+  - Generic High Entropy Secret
 version: 2
