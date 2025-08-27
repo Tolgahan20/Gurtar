@@ -1,72 +1,33 @@
-import { Entity, Column, Index } from 'typeorm';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Entity, Column } from 'typeorm';
 import { BaseEntity } from '../../../database/entities/base.entity';
-
-export enum LoginType {
-  NORMAL = 'normal',
-  GOOGLE = 'google',
-  FACEBOOK = 'facebook',
-}
-
-export enum Gender {
-  MALE = 'male',
-  FEMALE = 'female',
-  OTHER = 'other',
-  PREFER_NOT_SAY = 'prefer_not_say',
-}
+import { Role } from '../../../common/decorators/roles.decorator';
 
 @Entity('users')
-@Index(['email'], { unique: true })
-@Index(['phone'], { unique: true })
 export class User extends BaseEntity {
-  @ApiProperty({ description: 'User first name' })
-  @Column({ length: 100 })
-  name: string;
-
-  @ApiProperty({ description: 'User last name' })
-  @Column({ length: 100 })
-  surname: string;
-
-  @ApiProperty({ description: 'User email address' })
-  @Column({ length: 255, unique: true })
+  @Column()
   email: string;
 
-  @ApiProperty({ description: 'User phone number' })
-  @Column({ length: 20, unique: true })
-  phone: string;
+  @Column()
+  name: string;
 
-  @ApiPropertyOptional({
-    description: 'Hashed password (null if social login)',
-  })
-  @Column({ length: 255, nullable: true })
+  @Column()
+  surname: string;
+
+  @Column()
   password_hash: string;
 
-  @ApiProperty({ description: 'Login type', enum: LoginType })
-  @Column({
-    type: 'enum',
-    enum: LoginType,
-    default: LoginType.NORMAL,
-  })
-  login_type: LoginType;
+  @Column({ type: 'enum', enum: Role, array: true, default: [Role.CUSTOMER] })
+  roles: Role[];
 
-  @ApiPropertyOptional({ description: 'User gender', enum: Gender })
-  @Column({
-    type: 'enum',
-    enum: Gender,
-    nullable: true,
-  })
-  gender?: Gender;
+  @Column({ nullable: true })
+  phone?: string;
 
-  @ApiPropertyOptional({ description: 'User birthday' })
-  @Column({ type: 'date', nullable: true })
-  birthday?: Date;
+  @Column({ default: false })
+  email_verified: boolean;
 
-  @ApiPropertyOptional({ description: 'User allergies list' })
-  @Column({ type: 'text', array: true, nullable: true })
-  allergies?: string[];
+  @Column({ default: false })
+  phone_verified: boolean;
 
-  // Virtual property for full name
-  get fullName(): string {
-    return `${this.name} ${this.surname}`;
-  }
+  @Column({ nullable: true })
+  avatar_url?: string;
 }

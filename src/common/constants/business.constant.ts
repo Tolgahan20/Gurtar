@@ -1,0 +1,27 @@
+export const BUSINESS_CONSTANTS = {
+  SUBSCRIPTION: {
+    PRICE: 15,
+    CURRENCY: 'EUR',
+    TRIAL_DAYS: 30,
+    BILLING_CYCLE: 'monthly',
+  },
+  PAYOUT: {
+    MIN_AMOUNT: 50,
+    CURRENCY: 'EUR',
+    PROCESSING_DAYS: 3,
+  },
+  PACKAGE: {
+    RESERVATION_TIMEOUT: 90, // seconds
+    MAX_STOCK: 100,
+    MIN_DISCOUNT_PERCENT: 30,
+    MAX_AVAILABLE_DAYS: 7,
+  },
+  WORKER: {
+    MAX_WORKERS: 10,
+    PICKUP_CODE_LENGTH: 6,
+  },
+  LOCATION: {
+    MAX_SEARCH_RADIUS_KM: 50,
+    DEFAULT_SEARCH_RADIUS_KM: 10,
+  },
+} as const;

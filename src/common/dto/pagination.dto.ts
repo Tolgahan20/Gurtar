@@ -1,30 +1,45 @@
-import { IsOptional, IsPositive, Min, Max } from 'class-validator';
-import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { PAGINATION_CONSTANTS } from '../constants';
+
+export enum SortOrder {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
 
 export class PaginationDto {
-  @ApiPropertyOptional({ minimum: 1, default: 1 })
-  @IsOptional()
+  @ApiPropertyOptional({
+    minimum: 1,
+    default: PAGINATION_CONSTANTS.DEFAULT_PAGE,
+  })
   @Type(() => Number)
-  @IsPositive()
-  page?: number = 1;
-
-  @ApiPropertyOptional({ minimum: 1, maximum: 100, default: 10 })
-  @IsOptional()
-  @Type(() => Number)
+  @IsInt()
   @Min(1)
-  @Max(100)
-  limit?: number = 10;
+  @IsOptional()
+  page?: number = PAGINATION_CONSTANTS.DEFAULT_PAGE;
+
+  @ApiPropertyOptional({
+    minimum: 1,
+    maximum: PAGINATION_CONSTANTS.MAX_LIMIT,
+    default: PAGINATION_CONSTANTS.DEFAULT_LIMIT,
+  })
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(PAGINATION_CONSTANTS.MAX_LIMIT)
+  @IsOptional()
+  limit?: number = PAGINATION_CONSTANTS.DEFAULT_LIMIT;
+
+  @ApiPropertyOptional({
+    enum: SortOrder,
+    default: SortOrder.DESC,
+  })
+  @IsEnum(SortOrder)
+  @IsOptional()
+  sortOrder?: SortOrder = SortOrder.DESC;
 
   @ApiPropertyOptional()
   @IsOptional()
   sortBy?: string;
-
-  @ApiPropertyOptional({ enum: ['ASC', 'DESC'], default: 'DESC' })
-  @IsOptional()
-  sortOrder?: 'ASC' | 'DESC' = 'DESC';
-
-  get skip(): number {
-    return ((this.page || 1) - 1) * (this.limit || 10);
-  }
 }
