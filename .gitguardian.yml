@@ -1,0 +1,10 @@
+secret:
+  ignored_paths:
+  - node_modules/
+  - build/
+  - '*.lock'
+  - .env.example
+  - '*.log'
+  - coverage/
+  - dist/
+version: 2

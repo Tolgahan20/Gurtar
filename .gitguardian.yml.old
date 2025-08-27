@@ -1,0 +1,36 @@
+# GitGuardian configuration file
+# Documentation: https://docs.gitguardian.com/secrets-detection/integrations/git-hooks/pre-commit
+
+# Paths to ignore
+paths-ignore:
+  - "*.lock"
+  - "*.log"
+  - "node_modules/"
+  - "dist/"
+  - "build/"
+  - "coverage/"
+  - ".env.example"  # This is safe as it contains example values
+
+# File extensions to scan
+scan-extensions:
+  - ".ts"
+  - ".js"
+  - ".json"
+  - ".yml"
+  - ".yaml"
+  - ".env"
+  - ".md"
+
+# Secrets to detect
+detectors:
+  - name: "Generic API Key"
+  - name: "Generic Password"
+  - name: "JWT"
+  - name: "Database URL"
+  - name: "PostgreSQL Credentials"
+
+# Exit codes
+exit-zero: false  # Return non-zero exit code if secrets found
+
+# Verbose output
+verbose: false
